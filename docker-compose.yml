@@ -1,0 +1,57 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: sales-champion-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sales_champion}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - sales_champion_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sales_champion}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: sales-champion-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sales-champion-backend
+    environment:
+      DATABASE_URL: ${BACKEND_DATABASE_URL:-postgresql+psycopg://postgres:postgres@db:5432/sales_champion}
+      REDIS_URL: ${BACKEND_REDIS_URL:-redis://redis:6379/0}
+      JWT_SECRET: ${BACKEND_JWT_SECRET:-sales-champion-demo-secret}
+      DEMO_SEED_PASSWORD: ${BACKEND_DEMO_SEED_PASSWORD:-password}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sales-champion-frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  sales_champion_pg:

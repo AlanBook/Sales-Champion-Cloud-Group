@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ChampionScoreRule",
+  "type": "object",
+  "required": [
+    "rule_name",
+    "version",
+    "dimensions"
+  ],
+  "properties": {
+    "rule_name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "dimension_code",
+          "dimension_name",
+          "weight",
+          "metrics"
+        ],
+        "properties": {
+          "dimension_code": {
+            "type": "string"
+          },
+          "dimension_name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "metric_code",
+                "metric_name",
+                "formula_hint"
+              ],
+              "properties": {
+                "metric_code": {
+                  "type": "string"
+                },
+                "metric_name": {
+                  "type": "string"
+                },
+                "formula_hint": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
