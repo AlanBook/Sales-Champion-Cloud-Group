@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "sales-champion-cloud",
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/.next",
+  "devCommand": "cd frontend && npm run dev",
+  "installCommand": "cd backend && pip install -r requirements.txt",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "/api/v1"
+  }
+}

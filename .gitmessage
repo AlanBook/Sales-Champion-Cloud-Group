@@ -1,0 +1,15 @@
+feat: 销冠云团 Windows 无 Docker 版本 - 后端系统完整实现
+
+- 使用 SQLite 替代 PostgreSQL，无需 Docker
+- 临时禁用 pgvector，使用 JSON 存储向量数据
+- 添加数据库初始化脚本 (init_db.py)
+- 添加后端启动脚本 (run_server.py)
+- 配置 CORS 支持前后端通信
+- 内置演示账号和种子数据
+- 添加详细启动说明文档
+
+技术栈:
+- 后端：FastAPI + SQLAlchemy + SQLite
+- 前端：Next.js 16 + React 19 + TypeScript
+- 认证：JWT
+- 功能：老板驾驶舱、导购助手、知识沉淀
